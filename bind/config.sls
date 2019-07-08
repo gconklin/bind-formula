@@ -225,6 +225,8 @@ bind_rndc_client_config:
 zones{{ dash_view }}-{{ zone }}{{ '.include' if serial_auto else ''}}:
   file.managed:
     - name: {{ zones_directory }}/{{ file }}{{ '.include' if serial_auto else ''}}
+    {# GRC: 'hack' to not replace ddns updates #}
+    - replace: {{ zone_data.get("replace", True) }}
     - source: {{ zone_source }}
     - template: jinja
     {% if zone_records != {} %}
